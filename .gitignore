@@ -1,5 +1,8 @@
-# Visual Studio Code cache directory
-.vscode
+# Python cache directory
+__pycache__/
+
+# VS Code cache directory
+.vscode/
 
 # Mac OS specific files
 .DS_Store
