@@ -1,0 +1,5 @@
+# Visual Studio Code cache directory
+.vscode
+
+# Mac OS specific files
+.DS_Store
