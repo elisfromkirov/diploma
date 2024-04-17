@@ -1,10 +1,13 @@
 # Getting started #
 
-In order to run demos you have to create work environment
+Firstly you have to create [conda](https://docs.anaconda.com/free/miniconda/index.html) environment containing all necessary dependencies
 ```bash
 conda env create -f diploma
 ```
-and activate it
+
+Then activate it
 ```bash
 conda activate diploma
 ```
+
+Now you are ready to run demos!
