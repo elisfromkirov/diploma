@@ -1,0 +1,162 @@
+joints=34
+
+[00] name=universe
+[01] name=root_joint
+[02] name=leg_left_1_joint
+[03] name=leg_left_2_joint
+[04] name=leg_left_3_joint
+[05] name=leg_left_4_joint
+[06] name=leg_left_5_joint
+[07] name=leg_left_6_joint
+[08] name=leg_right_1_joint
+[09] name=leg_right_2_joint
+[10] name=leg_right_3_joint
+[11] name=leg_right_4_joint
+[12] name=leg_right_5_joint
+[13] name=leg_right_6_joint
+[14] name=torso_1_joint
+[15] name=torso_2_joint
+[16] name=arm_left_1_joint
+[17] name=arm_left_2_joint
+[18] name=arm_left_3_joint
+[19] name=arm_left_4_joint
+[20] name=arm_left_5_joint
+[21] name=arm_left_6_joint
+[22] name=arm_left_7_joint
+[23] name=gripper_left_joint
+[24] name=arm_right_1_joint
+[25] name=arm_right_2_joint
+[26] name=arm_right_3_joint
+[27] name=arm_right_4_joint
+[28] name=arm_right_5_joint
+[29] name=arm_right_6_joint
+[30] name=arm_right_7_joint
+[31] name=gripper_right_joint
+[32] name=head_1_joint
+[33] name=head_2_joint
+
+frames=121
+
+[00] name=universe parent=0
+[01] name=root_joint parent=1
+[02] name=base_link parent=1
+[03] name=leg_left_1_joint parent=2
+[04] name=leg_left_1_link parent=2
+[05] name=leg_left_2_joint parent=3
+[06] name=leg_left_2_link parent=3
+[07] name=leg_left_3_joint parent=4
+[08] name=leg_left_3_link parent=4
+[09] name=leg_left_4_joint parent=5
+[10] name=leg_left_4_link parent=5
+[11] name=leg_left_5_joint parent=6
+[12] name=leg_left_5_link parent=6
+[13] name=leg_left_6_joint parent=7
+[14] name=leg_left_6_link parent=7
+[15] name=leg_left_sole_fix_joint parent=7
+[16] name=left_sole_link parent=7
+[17] name=leg_right_1_joint parent=8
+[18] name=leg_right_1_link parent=8
+[19] name=leg_right_2_joint parent=9
+[20] name=leg_right_2_link parent=9
+[21] name=leg_right_3_joint parent=10
+[22] name=leg_right_3_link parent=10
+[23] name=leg_right_4_joint parent=11
+[24] name=leg_right_4_link parent=11
+[25] name=leg_right_5_joint parent=12
+[26] name=leg_right_5_link parent=12
+[27] name=leg_right_6_joint parent=13
+[28] name=leg_right_6_link parent=13
+[29] name=leg_right_sole_fix_joint parent=13
+[30] name=right_sole_link parent=13
+[31] name=torso_1_joint parent=14
+[32] name=torso_1_link parent=14
+[33] name=torso_2_joint parent=15
+[34] name=torso_2_link parent=15
+[35] name=arm_left_1_joint parent=16
+[36] name=arm_left_1_link parent=16
+[37] name=arm_left_2_joint parent=17
+[38] name=arm_left_2_link parent=17
+[39] name=arm_left_3_joint parent=18
+[40] name=arm_left_3_link parent=18
+[41] name=arm_left_4_joint parent=19
+[42] name=arm_left_4_link parent=19
+[43] name=arm_left_5_joint parent=20
+[44] name=arm_left_5_link parent=20
+[45] name=arm_left_6_joint parent=21
+[46] name=arm_left_6_link parent=21
+[47] name=arm_left_7_joint parent=22
+[48] name=arm_left_7_link parent=22
+[49] name=wrist_left_ft_joint parent=22
+[50] name=wrist_left_ft_link parent=22
+[51] name=wrist_left_tool_joint parent=22
+[52] name=wrist_left_ft_tool_link parent=22
+[53] name=gripper_left_base_link_joint parent=22
+[54] name=gripper_left_base_link parent=22
+[55] name=gripper_left_inner_double_joint parent=22
+[56] name=gripper_left_inner_double_link parent=22
+[57] name=gripper_left_fingertip_1_joint parent=22
+[58] name=gripper_left_fingertip_1_link parent=22
+[59] name=gripper_left_fingertip_2_joint parent=22
+[60] name=gripper_left_fingertip_2_link parent=22
+[61] name=gripper_left_inner_single_joint parent=22
+[62] name=gripper_left_inner_single_link parent=22
+[63] name=gripper_left_fingertip_3_joint parent=22
+[64] name=gripper_left_fingertip_3_link parent=22
+[65] name=gripper_left_joint parent=23
+[66] name=gripper_left_motor_double_link parent=23
+[67] name=gripper_left_motor_single_joint parent=22
+[68] name=gripper_left_motor_single_link parent=22
+[69] name=arm_right_1_joint parent=24
+[70] name=arm_right_1_link parent=24
+[71] name=arm_right_2_joint parent=25
+[72] name=arm_right_2_link parent=25
+[73] name=arm_right_3_joint parent=26
+[74] name=arm_right_3_link parent=26
+[75] name=arm_right_4_joint parent=27
+[76] name=arm_right_4_link parent=27
+[77] name=arm_right_5_joint parent=28
+[78] name=arm_right_5_link parent=28
+[79] name=arm_right_6_joint parent=29
+[80] name=arm_right_6_link parent=29
+[81] name=arm_right_7_joint parent=30
+[82] name=arm_right_7_link parent=30
+[83] name=wrist_right_ft_joint parent=30
+[84] name=wrist_right_ft_link parent=30
+[85] name=wrist_right_tool_joint parent=30
+[86] name=wrist_right_ft_tool_link parent=30
+[87] name=gripper_right_base_link_joint parent=30
+[88] name=gripper_right_base_link parent=30
+[89] name=gripper_right_inner_double_joint parent=30
+[90] name=gripper_right_inner_double_link parent=30
+[91] name=gripper_right_fingertip_1_joint parent=30
+[92] name=gripper_right_fingertip_1_link parent=30
+[93] name=gripper_right_fingertip_2_joint parent=30
+[94] name=gripper_right_fingertip_2_link parent=30
+[95] name=gripper_right_inner_single_joint parent=30
+[96] name=gripper_right_inner_single_link parent=30
+[97] name=gripper_right_fingertip_3_joint parent=30
+[98] name=gripper_right_fingertip_3_link parent=30
+[99] name=gripper_right_joint parent=31
+[100] name=gripper_right_motor_double_link parent=31
+[101] name=gripper_right_motor_single_joint parent=30
+[102] name=gripper_right_motor_single_link parent=30
+[103] name=head_1_joint parent=32
+[104] name=head_1_link parent=32
+[105] name=head_2_joint parent=33
+[106] name=head_2_link parent=33
+[107] name=rgbd_joint parent=33
+[108] name=rgbd_link parent=33
+[109] name=rgbd_depth_joint parent=33
+[110] name=rgbd_depth_frame parent=33
+[111] name=rgbd_depth_optical_joint parent=33
+[112] name=rgbd_depth_optical_frame parent=33
+[113] name=rgbd_optical_joint parent=33
+[114] name=rgbd_optical_frame parent=33
+[115] name=rgbd_rgb_joint parent=33
+[116] name=rgbd_rgb_frame parent=33
+[117] name=rgbd_rgb_optical_joint parent=33
+[118] name=rgbd_rgb_optical_frame parent=33
+[119] name=imu_joint parent=15
+[120] name=imu_link parent=15
+
+# try to run this on mac
