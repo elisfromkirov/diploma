@@ -1,0 +1,11 @@
+name: diploma
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy
+  - cvxopt
+  - pinocchio
+  - example-robot-data
+  - gepetto-viewer-corba
+  - omniorb=4.3.1
