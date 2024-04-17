@@ -1,15 +1,16 @@
-import numpy as np
-import os.path as fs
 import pinocchio as pin
 import pinocchio.visualize as vis
+import numpy as np
+
+from .utility import get_model_file_path
 
 class Talos:
     def __init__(self):
-        workspace_dir = fs.dirname(fs.abspath('{}/../../'.format(__file__)))
-        model_file_path = '{}/example-robot-data/robots/talos_data/robots/talos_reduced.urdf'.format(workspace_dir)
+        # model file path
+        model_file_path, model_dir = get_model_file_path('talos_data/robots/talos_reduced.urdf')
 
         # robot model parameters
-        self.model, self.collision_model, self.visual_model = pin.buildModelsFromUrdf(model_file_path, workspace_dir)
+        self.model, self.collision_model, self.visual_model = pin.buildModelsFromUrdf(model_file_path, model_dir)
 
         # data for computation
         self.data = self.model.createData()
