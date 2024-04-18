@@ -1,7 +1,7 @@
 import numpy as np
 
 class Tilt:
-    def __init__(self, robot, period = 10.0):
+    def __init__(self, robot, period):
         torso_pitch = robot.model.joints[robot.model.getJointId("torso_2_joint")]
 
         self._period = period
@@ -12,9 +12,6 @@ class Tilt:
         self._q_index = torso_pitch.idx_q
         self._v_index = torso_pitch.idx_v
         self._a_index = torso_pitch.idx_v
-
-        print(torso_pitch.idx_q)
-        print(torso_pitch.idx_v)
 
     def q(self, t):
         self._q[self._q_index] = 0.6 * (1 - np.cos(self._phi(t)))

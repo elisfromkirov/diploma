@@ -46,19 +46,18 @@ class Talos:
 
         self.zero_a = np.zeros(self.model.nv)
 
-    def apply_forward_kinematics(self):
-        pin.forwardKinematics(self.model, self.data, self.q)
+    def apply_forward_dynamics(self, u, f, dt):
+        assert u.ndim == 1 and u.shape[0] == self.model.nv
+        assert f.ndim == 1 and f.shape[0] == self.model.njoints * 6
 
-    def compute_acceleration(self, u, f):
-        assert u.dim == 1 and u.shape[0] == self.model.nv
-        assert f.dim == 1 and f.shape[0] == self.model.njoints * 6
-
-        f_ext = [pin.Force.Zero() for joint in range(0, model.njoints)]
-        for joint in range(0, model.njoints):
+        f_ext = [pin.Force.Zero() for joint in range(0, self.model.njoints)]
+        for joint in range(0, self.model.njoints):
             f_ext[joint].linear = f[joint * 6 : joint * 6 + 3]
             f_ext[joint].angular = f[joint * 6 + 3 : joint * 6 + 6]
 
-        return pin.aba(self.model, self.data, self.q, self.v, u, f_ext)
+        self.a = pin.aba(self.model, self.data, self.q, self.v, u, f_ext)
+        self.v += self.a * dt
+        self.q = pin.integrate(self.model, self.q, self.v * dt)
 
     def compute_joint_space_inertia(self):
         return pin.crba(self.model, self.data, self.q)
@@ -67,13 +66,10 @@ class Talos:
         return pin.rnea(self.model, self.data, self.q, self.v, self.zero_a)
 
     def compute_joint_jacobians(self):
-        pin.computeJointJacobians(self.model, self.data)
+        pin.computeJointJacobians(self.model, self.data, self.q)
 
     def get_jacobian(self):
-        return np.vstack([pin.getJointJacobian(model, data, joint, pin.LOCAL) for joint in range(0, model.njoints)])
-
-    def get_joint_index(self, joint_name):
-        return self.model.getJointId(joint_name)
+        return np.vstack([pin.getJointJacobian(self.model, self.data, joint, pin.LOCAL) for joint in range(0, self.model.njoints)])
 
     def get_frame_index(self, frame_name):
         return self.model.getFrameId(frame_name)
