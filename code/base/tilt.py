@@ -1,32 +1,31 @@
 import numpy as np
 
 class Tilt:
-    def __init__(self, period):
+    def __init__(self, robot, period = 10.0):
+        torso_pitch = robot.model.joints[robot.model.getJointId("torso_2_joint")]
+
         self._period = period
         self._omega = 2 * np.pi / period
-        self._q = np.zeros(39)
-        self._v = np.zeros(38)
-        self._a = np.zeros(38)
+        self._q = np.zeros(robot.model.nq)
+        self._v = np.zeros(robot.model.nv)
+        self._a = np.zeros(robot.model.nv)
+        self._q_index = torso_pitch.idx_q
+        self._v_index = torso_pitch.idx_v
+        self._a_index = torso_pitch.idx_v
+
+        print(torso_pitch.idx_q)
+        print(torso_pitch.idx_v)
 
     def q(self, t):
-        phi = self._phi(t)
-
-        self._q[7 + 13] = 0.6 * (1 - np.cos(phi))
-
+        self._q[self._q_index] = 0.6 * (1 - np.cos(self._phi(t)))
         return self._q
 
     def v(self, t):
-        phi = self._phi(t)
-
-        self._v[6 + 13] = 0.6 * self._omega * np.sin(phi)
-
+        self._v[self._v_index] = 0.6 * self._omega * np.sin(self._phi(t))
         return self._v
 
     def a(self, t):
-        phi = self._phi(t)
-
-        self._a[6 + 13] = 0.6 * self._omega ** 2 * np.cos(phi)
-
+        self._a[self._a_index] = 0.6 * self._omega ** 2 * np.cos(self._phi(t))
         return self._a
 
     def _phi(self, t):

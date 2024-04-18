@@ -71,6 +71,7 @@ class ControlledTalos(Talos):
     # def update():
 
     def _update(self, t, dt):
+
         H = self.compute_joint_space_inertia()
 
         c = self.compute_non_linear_effects()
