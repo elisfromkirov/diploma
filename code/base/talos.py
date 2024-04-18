@@ -46,6 +46,13 @@ class Talos:
 
         self.zero_a = np.zeros(self.model.nv)
 
+        self.neutral_center_of_mass = pin.centerOfMass(self.model, self.data, self.q)
+
+        self.com_ref = pin.centerOfMass(self.model, self.data, self.q)
+
+        self.m = pin.computeTotalMass(self.model)
+        self.g = np.array([0.0, 0.0, 9.81])
+
     def apply_forward_dynamics(self, u, f, dt):
         assert u.ndim == 1 and u.shape[0] == self.model.nv
         assert f.ndim == 1 and f.shape[0] == self.model.njoints * 6
@@ -59,8 +66,19 @@ class Talos:
         self.v += self.a * dt
         self.q = pin.integrate(self.model, self.q, self.v * dt)
 
+    def compute_center_of_mass(self):
+        pin.centerOfMass(self.model, self.data, self.q, self.v)
+        return np.array(self.data.com[0]), np.array(self.data.vcom[0])
+
+    # TODO: Think about adding _matrix prefix
     def compute_joint_space_inertia(self):
         return pin.crba(self.model, self.data, self.q)
+
+    def compute_centroidal_momentum_matrix(self):
+        return pin.ccrba(self.model, self.data, self.q, self.v)
+
+    def compute_centroidal_momentum_matrix_variation(self):
+        return pin.computeCentroidalMapTimeVariation(self.model, self.data, self.q, self.v)
 
     def compute_non_linear_term(self):
         return pin.rnea(self.model, self.data, self.q, self.v, self.zero_a)

@@ -8,23 +8,42 @@ class ControlledTalos(Talos):
     def __init__(self):
         super(ControlledTalos, self).__init__()
 
+        ### Set trajectory to follow ###
+
         self.trajectory = Tilt(self, 10.0)
+
+        ### Set support ###
 
         self.support = [
             self.get_frame_index("leg_left_sole_fix_joint"),
             self.get_frame_index("leg_right_sole_fix_joint")
         ]
 
-        self.k_p = 50.0 # proportional gain
-        self.k_d = 2.0 * np.sqrt(self.k_p) # derivative gain
+        ### set PD gains ###
 
-        self.W = np.eye(self.model.nv) # tracking weights
+        self.k_l = 1000.0
+        self.d_l = 2.0 * np.sqrt(self.k_l)
+
+        self.k_a = 1000.0
+        self.d_a = 2.0 * np.sqrt(self.k_l)
+
+        self.k_t = 50.0
+        self.d_t = 2.0 * np.sqrt(self.k_t)
+
+        ### set objective weight ###
+
+        self.w_l = 10.0
+        self.w_a = 1.0
+
+        self.W = np.eye(self.model.nv)
 
         self.G = np.zeros((self.model.nv, self.model.nv))
         for i in range(0, 6):
-            self.G[i][i] = 5.0 # floaing base torques weights
+            self.G[i][i] = 5.0
 
-        self.k_r = 1e-3 # regularization coefficient
+        ### set regularization ###
+
+        self.k_r = 1e-3
 
     def get_support_jacobian(self):
         return np.vstack([self.get_frame_jacobian(support) for support in self.support])
@@ -33,7 +52,7 @@ class ControlledTalos(Talos):
         return np.vstack([self.get_frame_jacobian_variation(support) for support in self.support])
 
     def update(self, t, dt):
-        ### Compute terms required to formulate optimization problem ###
+        ### Compute all terms required to formulate optimization problem ###
 
         H = self.compute_joint_space_inertia()
         c = self.compute_non_linear_term()
@@ -46,11 +65,21 @@ class ControlledTalos(Talos):
         J_sup = self.get_support_jacobian()
         dot_J_sup = self.get_support_jacobian_variation()
 
+        A = self.compute_centroidal_momentum_matrix()
+        [A_l, A_a] = np.vsplit(A, 2)
+
+        dot_A = self.compute_centroidal_momentum_matrix_variation()
+        [dot_A_l, dot_A_a] = np.vsplit(dot_A, 2)
+
+        com, dot_com = self.compute_center_of_mass()
+
+        dot_P_des = self.m * (- self.k_l * (com - self.com_ref) - self.d_l * dot_com)
+
         q_traj = self.trajectory.q(t)
         v_traj = self.trajectory.v(t)
         a_traj = self.trajectory.a(t)
 
-        a_des = - self.k_p * self.projection @ (self.q - q_traj) - self.k_d * (self.v - v_traj) + a_traj
+        a_des = - self.k_t * self.projection @ (self.q - q_traj) - self.d_t * (self.v - v_traj) + a_traj
 
         nv = self.model.nv # dimension of both acceleration and torques
         nf = self.model.njoints * 6 # dimension of forces
@@ -58,14 +87,21 @@ class ControlledTalos(Talos):
 
         ### Formulate objective ###
 
-        P = opt.matrix(np.block([
-            [self.W,             np.zeros((nv, nv)), np.zeros((nv, nf))],
-            [np.zeros((nv, nv)), self.G,             np.zeros((nv, nf))],
-            [np.zeros((nf, nv)), np.zeros((nf, nv)), np.zeros((nf, nf))]
+        # print((dot_P_des - (A_l @ self.a + dot_A_l @ self.v)))
+        # print((dot_P_des - dot_A_l @ self.v))
+
+        # print(com - self.com_ref)
+
+        # print(dot_P_des - self.m * self.g)
+
+        Q = opt.matrix(np.block([
+            [self.w_l * A_l.T @ A_l + self.W, np.zeros((nv, nv)), np.zeros((nv, nf))],
+            [np.zeros((nv, nv)),              self.G,             np.zeros((nv, nf))],
+            [np.zeros((nf, nv)),              np.zeros((nf, nv)), np.zeros((nf, nf))]
         ]))
 
-        q = opt.matrix(np.hstack([
-            -1.0 * a_des.T @ self.W,
+        p = opt.matrix(np.hstack([
+            -1.0 * (self.w_l * (dot_P_des - dot_A_l @ self.v).T @ A_l + a_des.T @ self.W),
             np.zeros(nv),
             np.zeros(nf),
         ]))
@@ -76,19 +112,19 @@ class ControlledTalos(Talos):
 
         ### Formulate equality constraints ###
 
-        A = opt.matrix(np.block([
+        B = opt.matrix(np.block([
             [H,     -1.0 * np.eye(nv),   -1.0 * J.T        ],
             [J_sup, np.zeros((nc, nv)),  np.zeros((nc, nf))]
         ]))
 
-        b = opt.matrix(np.hstack([
+        d = opt.matrix(np.hstack([
             -1.0 * c,
             -1.0 * dot_J_sup @ self.v,
         ]))
 
         ### Solve ###
 
-        solution = opt.solvers.qp(P + R, q, A = A, b = b)
+        solution = opt.solvers.qp(Q + R, p, A = B, b = d)
         x = np.array(solution['x'])
         x = x.reshape(x.shape[0])
 

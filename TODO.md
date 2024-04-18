@@ -2,9 +2,7 @@
 
 Major tasks:
 - replace support with contacts found by HPP collision library (I suppose this is right way to do it, but I'm not completely sure)
-- calculate centroidal momentum matrix (I suggest to use pin.ccrba())
-- include balance objectives
-- try controller
+- include momentum balance objective
 - clean up temp direcotry
 - add documentation
 
