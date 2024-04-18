@@ -13,6 +13,7 @@ The answer is no. Authors suggest to look at [TSID](https://github.com/stack-of-
 # Functions #
 
 The function `forwardDynamics(model, data, q)` fills `oMf` array, each of its elements is transformation from frame to origin.
+Are u sure?
 
 ```c++
 struct Model
