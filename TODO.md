@@ -1,19 +1,16 @@
 # Tasks #
 
 Major tasks:
-- try controller
 - replace support with contacts found by HPP collision library (I suppose this is right way to do it, but I'm not completely sure)
-- calculate centroidal momentum matrix
+- calculate centroidal momentum matrix (I suggest to use pin.ccrba())
 - include balance objectives
 - try controller
-- what's with documentation? remove or rewrite it.
+- clean up temp direcotry
+- add documentation
 
 Minor tasks:
-- compile bibliography
-- adjust diploma template
+- compile diploma template
 
-Readme refinement:
+# Results #
 
-once you've created environment, you have to activate it
-
-and when it become no more necessary - deactivate
+Current controller works fine, but it does nothing. So, let's try balancing objective.

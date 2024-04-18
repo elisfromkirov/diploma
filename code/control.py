@@ -15,16 +15,16 @@ class ControlledTalos(Talos):
             self.get_frame_index("leg_right_sole_fix_joint")
         ]
 
-        self.k_p = 50.0
-        self.k_d = 2.0 * np.sqrt(self.k_p)
+        self.k_p = 50.0 # proportional gain
+        self.k_d = 2.0 * np.sqrt(self.k_p) # derivative gain
 
-        self.W = np.eye(self.model.nv)
+        self.W = np.eye(self.model.nv) # tracking weights
 
         self.G = np.zeros((self.model.nv, self.model.nv))
         for i in range(0, 6):
-            self.G[i][i] = 10.0
+            self.G[i][i] = 5.0 # floaing base torques weights
 
-        self.k_r = 1e-2
+        self.k_r = 1e-3 # regularization coefficient
 
     def get_support_jacobian(self):
         return np.vstack([self.get_frame_jacobian(support) for support in self.support])
@@ -65,7 +65,7 @@ class ControlledTalos(Talos):
         ]))
 
         q = opt.matrix(np.hstack([
-            a_des.T @ self.W,
+            -1.0 * a_des.T @ self.W,
             np.zeros(nv),
             np.zeros(nf),
         ]))
@@ -77,7 +77,7 @@ class ControlledTalos(Talos):
         ### Formulate equality constraints ###
 
         A = opt.matrix(np.block([
-            [H,     -1.0 * np.eye(nv),   J.T               ],
+            [H,     -1.0 * np.eye(nv),   -1.0 * J.T        ],
             [J_sup, np.zeros((nc, nv)),  np.zeros((nc, nf))]
         ]))
 
@@ -101,9 +101,9 @@ class ControlledTalos(Talos):
 def main():
     talos = ControlledTalos()
     time = 0.0
-    delta_time = 1e-4
+    delta_time = 1e-3
     iteration = 0
-    while time < 0.05:
+    while True:
         time += delta_time
         iteration += 1
         talos.update(time, delta_time)
