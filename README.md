@@ -6,8 +6,7 @@ Firstly you have to create [conda](https://docs.anaconda.com/free/miniconda/inde
 ```bash
 conda env create -f diploma
 ```
-
-Then activate it
+and then activate it
 ```bash
 conda activate diploma
 ```
