@@ -1,0 +1,55 @@
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage[a4paper, lmargin=30mm, rmargin=15mm, tmargin=20mm, bmargin=20mm]{geometry}
+\usepackage{multirow}
+
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+
+\defaultfontfeatures{Ligatures=TeX}
+
+\setmainfont{Times New Roman}
+\setmonofont{Courier New}
+\setsansfont{Arial}
+
+\newfontfamily\cyrillicfont{Times New Roman}
+\newfontfamily\cyrillicfontsf{Arial}
+\newfontfamily\cyrillicfonttt{Courier New}
+
+\newfontfamily\englishfont{Times New Roman}
+\newfontfamily\englishfontsf{Arial}
+\newfontfamily\englishfonttt{Courier New}
+
+\linespread{1.5}
+
+\usepackage[backend=biber,
+  bibencoding=utf8,
+  sorting=none,
+  style=gost-numeric,
+  language=autobib,
+  autolang=other,
+  clearlang=true,
+  defernumbers=true,
+  sortcites=true,
+  doi=true,
+  isbn=true,
+  ]{biblatex}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage[
+  hidelinks,
+  colorlinks=true,
+  linkcolor=Blue, % This is the color of table of contents and figure references
+  citecolor=Blue, % This is the color of citations
+  urlcolor=Blue % This is the colro of urls
+]{hyperref}
+\renewcommand{\UrlFont}{\small\rmfamily\tt}
+
+\renewcommand\thesection{\arabic{section}}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\usepackage{graphicx}
+\graphicspath{ {./images/} } % This sets path to directory containing images.
+\addto\captionsrussian{\renewcommand{\figurename}{Рисунок}} % This changes caption from 'Рис.' to 'Рисунок'.
