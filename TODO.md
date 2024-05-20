@@ -46,8 +46,6 @@
 ## Minor tasks ##
 
 Clean up style.tex
-Make title
-Equation numbers and references
 
 ## Presentation ##
 
