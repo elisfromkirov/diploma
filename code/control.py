@@ -3,6 +3,7 @@ from base import Talos, Tilt
 import cvxopt as opt
 import numpy as np
 import pinocchio as pin
+import time
 
 class ControlledTalos(Talos):
     def __init__(self):
@@ -136,15 +137,17 @@ class ControlledTalos(Talos):
 
 def main():
     talos = ControlledTalos()
-    time = 0.0
-    delta_time = 1e-3
-    iteration = 0
+
+    simulation_time = 0.0
+    simulation_delta_time = 0.008 # 120 hz
     while True:
-        time += delta_time
-        iteration += 1
-        talos.update(time, delta_time)
-        if iteration % 20 == 0:
-            talos.display()
+        initial_time = time.time()
+        simulation_time += simulation_delta_time
+        talos.update(simulation_time, simulation_delta_time)
+        talos.display()
+        update_duration = time.time() - initial_time
+        if update_duration < simulation_delta_time:
+            time.sleep(simulation_delta_time - update_duration)
 
 if __name__ == '__main__':
     main()
