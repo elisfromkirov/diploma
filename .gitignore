@@ -1,6 +1,9 @@
 # Python cache directory
 __pycache__/
 
+# LaTeX build directory
+.build/
+
 # VS Code cache directory
 .vscode/
 
